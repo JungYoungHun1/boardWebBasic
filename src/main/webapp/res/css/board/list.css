@@ -1,0 +1,2 @@
+#boardTable tr:not(:first-child):hover {background-color: #efefef;
+    cursor: pointer;}
