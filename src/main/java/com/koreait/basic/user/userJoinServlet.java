@@ -16,7 +16,7 @@ import java.io.IOException;
 public class userJoinServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        Utils.displayView("회원가입","user/join",req, res);
+        Utils.displayView("회원가입", "user/join", req, res);
     }
 
     @Override
@@ -26,6 +26,7 @@ public class userJoinServlet extends HttpServlet {
         String nm = req.getParameter("nm");
         int gender = Utils.getParameterInt(req, "gender");
         String hashPw = BCrypt.hashpw(upw, BCrypt.gensalt());
+
         UserEntity entity = new UserEntity();
         entity.setUid(uid);
         entity.setUpw(hashPw);
@@ -33,7 +34,15 @@ public class userJoinServlet extends HttpServlet {
         entity.setGender(gender);
 
         int result = UserDAO.join(entity);
-        res.sendRedirect("/user/login");
+        switch (result) {
+            case 1:
+                res.sendRedirect("/user/login");
+                break;
+            default:
+                req.setAttribute("err", "회원가입에 실패하였습니다.");
+                doGet(req, res);
+                break;
 
+        }
     }
 }

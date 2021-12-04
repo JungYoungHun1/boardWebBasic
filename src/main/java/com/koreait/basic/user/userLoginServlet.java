@@ -17,7 +17,7 @@ import java.io.IOException;
 public class userLoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        Utils.displayView("로그인","user/login", req, res);
+        Utils.displayView("로그인", "user/login", req, res);
 
     }
 
@@ -30,16 +30,27 @@ public class userLoginServlet extends HttpServlet {
         entity.setUpw(upw);
 
         loginResult lr = UserDAO.login(entity);
-        switch (lr.getResult()){
+        String err = null;
+        switch (lr.getResult()) {
             case 1:
                 HttpSession hs = req.getSession();
-                hs.setAttribute("loginUser",lr.getLoginUser());
+                hs.setAttribute("loginUser", lr.getLoginUser());
                 res.sendRedirect("/board/list");
+                return;
+            case 0:
+                err = "로그인을 실패하였습니다.";
                 break;
-            default:
+            case 2:
+                err = "아이디를 확인해 주세요.";
+                break;
+            case 3:
+                err = "비밀번호를 확인해 주세요.";
                 break;
         }
-
-
+        req.setAttribute("err", err);
+        doGet(req, res);
     }
+
+
 }
+
