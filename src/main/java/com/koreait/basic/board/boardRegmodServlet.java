@@ -42,7 +42,10 @@ public class boardRegmodServlet extends HttpServlet {
         }
         int iboard = Utils.getParameterInt(req, "iboard");
         String title = req.getParameter("title");
+        title = title.replace("<","&lt;").replace(">","&gt;");
         String ctnt = req.getParameter("ctnt");
+        ctnt = ctnt.replace("<","&lt;").replace(">","&gt;");
+        // 글쓰기 할때부터 치환시켜서 막아놓음
 
         int result = 0;
         BoardEntity entity = new BoardEntity();

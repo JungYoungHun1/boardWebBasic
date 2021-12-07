@@ -1,6 +1,7 @@
 package com.koreait.basic.board;
 
 import com.koreait.basic.Utils;
+import com.koreait.basic.board.model.BoardDTO;
 import com.koreait.basic.dao.BoardDAO;
 
 import javax.servlet.ServletException;
@@ -14,7 +15,24 @@ import java.io.IOException;
 public class boardListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        req.setAttribute("list", BoardDAO.selBoardList());
+        int searchType = Utils.getParameterInt(req,"searchType",0);
+        String searchText = req.getParameter("searchText");
+        int page = Utils.getParameterInt(req, "page", 1);
+
+        int rowCnt = 5;
+        BoardDTO param = new BoardDTO();
+        param.setSearchType(searchType);
+        param.setSearchText(searchText);
+        param.setRowCnt(rowCnt);
+        param.setPage(page);
+        int startIdx = (param.getPage() -1) * param.getRowCnt();
+        param.setStartIdx(startIdx);
+        req.setAttribute("maxPage", BoardDAO.getMaxPageNum(param));
+
+        // if(page == 0) { page = 1;}
+
+
+        req.setAttribute("list", BoardDAO.selBoardList(param));
         Utils.displayView("게시판","board/list", req, res);
     }
 

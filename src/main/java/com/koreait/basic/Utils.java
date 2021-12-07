@@ -24,6 +24,9 @@ public class Utils {
         String val = req.getParameter(key);
         return parseStringToInt(val, 0);
     }
+    public static int getParameterInt(HttpServletRequest req, String key, int defVal){
+        return parseStringToInt(req.getParameter(key), defVal);
+    }
 
     public static int parseStringToInt(String val, int defVal) {
         try {
