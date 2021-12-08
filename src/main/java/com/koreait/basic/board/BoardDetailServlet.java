@@ -1,8 +1,10 @@
 package com.koreait.basic.board;
 
 import com.koreait.basic.Utils;
+import com.koreait.basic.board.model.BoardCmtDTO;
 import com.koreait.basic.board.model.BoardDTO;
 import com.koreait.basic.board.model.BoardVO;
+import com.koreait.basic.dao.BoardCmtDAO;
 import com.koreait.basic.dao.BoardDAO;
 
 import javax.servlet.ServletException;
@@ -17,18 +19,21 @@ import java.io.IOException;
 public class BoardDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        int nohits = Utils.getParameterInt(req, "nohits");
         int iboard = Utils.getParameterInt(req, "iboard");
         BoardDTO param = new BoardDTO();
         param.setIboard(iboard);
 
         BoardVO data = BoardDAO.selBoardDetail(param);
-        //로그인 한 사람이 pk값과 data에 들어있는 writer값이 다르다면 혹은 로그인이
-        //안돼있으면 hit 값 올리기
+        req.setAttribute("data", data);
+
+        BoardCmtDTO cmtParam = new BoardCmtDTO();
+        cmtParam.setIboard(iboard);
+        req.setAttribute("cmtList", BoardCmtDAO.selBoardCmtList(cmtParam));
         int loginUserPk = Utils.getLoginUserPk(req);
-        if(loginUserPk != data.getWriter()){
+        if(loginUserPk != data.getWriter() && nohits != 1){
             BoardDAO.updBoardHitUp(param);
         }
-        req.setAttribute("data", data);
         Utils.displayView(data.getTitle(), "board/detail", req, res);    }
 
     @Override

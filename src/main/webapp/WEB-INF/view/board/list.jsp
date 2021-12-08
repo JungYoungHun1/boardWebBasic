@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <link rel="stylesheet" href="/res/css/board/list.css?ver=1">
 <div>
-    <form action="/board/list" method="get">
+    <form action="/board/list" method="get" id="searchFrm">
         <div>
             <select name ="searchType">
                 <option value="1"${param.searchType == 1 ? 'selected' : ''}>제목</option>
@@ -13,7 +13,15 @@
                 <option value="5"${param.searchType == 5 ? 'selected' : ''}>전체</option>
             </select>
             <input type="search" name="searchText" value="${param.searchText}">
-            <input type="submit" value="검색"></div>
+            <input type="submit" value="검색">
+            나타낼 행 수 :
+            <select name = "rowCnt">
+                <c:forEach var = "cnt" begin="5" end="30" step="5">
+                    <option value="${cnt}"${param.rowCnt == cnt ? 'selected' : ''}>${cnt}개</option>
+                </c:forEach>
+<%--                selected - 계속 고정--%>
+            </select>
+        </div>
     </form>
 </div>
 <c:choose>
@@ -64,9 +72,10 @@
 <div class="pageContainer">
     <c:set var="selectedPage" value="${param.page == null ? 1 : param.page}"/>
     <c:forEach var="page" begin="1" end="${maxPage}">
-        <div><a href="/board/list?page=${page}&searchType=${param.searchType}&searchText=${param.searchText}"><span class="${selectedPage == page ? 'selected' : ''}">${page}</span></a></div>
+        <div><a href="/board/list?page=${page}&searchType=${param.searchType}&searchText=${param.searchText}&rowCnt=${param.rowCnt}"><span class="${selectedPage == page ? 'selected' : ''}">${page}</span></a></div>
     </c:forEach>
+<%--    $searchtype - 페이지 넘어가도 안풀리게 해줌--%>
 </div>
     </c:otherwise>
 </c:choose>
-<script src="/res/js/board/list.js"></script>
+<script src="/res/js/board/list.js?ver=2"></script>

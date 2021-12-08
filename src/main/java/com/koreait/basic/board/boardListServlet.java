@@ -17,9 +17,9 @@ public class boardListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         int searchType = Utils.getParameterInt(req,"searchType",0);
         String searchText = req.getParameter("searchText");
+        int rowCnt = Utils.getParameterInt(req,"rowCnt",5);
         int page = Utils.getParameterInt(req, "page", 1);
 
-        int rowCnt = 5;
         BoardDTO param = new BoardDTO();
         param.setSearchType(searchType);
         param.setSearchText(searchText);
