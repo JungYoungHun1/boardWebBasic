@@ -11,24 +11,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/board/cmt/del")
-public class BoardCmtDelServlet extends HttpServlet {
+@WebServlet("/board/cmt/mod")
+public class BoardCmtModServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        int iboard = Utils.getParameterInt(req, "iboard");
-        BoardCmtEntity entity = new BoardCmtEntity();
-        entity.setIcmt(Utils.getParameterInt(req, "icmt"));
-        entity.setWriter(Utils.getLoginUserPk(req));
-
-        int result = BoardCmtDAO.delBoardCmt(entity);
-        res.sendRedirect("/board/detail?iboard="+ iboard);
 
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        int iboard = Utils.getParameterInt(req, "iboard");
+        BoardCmtEntity entity = new BoardCmtEntity();
+        entity.setIcmt(Utils.getParameterInt(req,"icmt"));
+        entity.setCtnt(req.getParameter("ctnt"));
+        entity.setWriter(Utils.getLoginUserPk(req));
 
+        int result = BoardCmtDAO.modBoardCmt(entity);
 
+        res.sendRedirect("/board/detail?iboard="+iboard);
 
     }
 }
