@@ -13,7 +13,7 @@ public class BoardCmtDAO {
     public static int modBoardCmt(BoardCmtEntity entity){
         Connection con = null;
         PreparedStatement ps = null;
-        String sql = "UPDATE t_board_cmt SET ctnt=? WHERE icmt=? AND writer=?";
+        String sql = "UPDATE t_board_cmt SET ctnt=?, mdt=now() WHERE icmt=? AND writer=?";
         try{
             con = DbUtils.getCon();
             ps = con.prepareStatement(sql);
@@ -51,7 +51,7 @@ public class BoardCmtDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String sql = "SELECT A.icmt, A.ctnt, A.writer, A.rdt, B.nm as writerNm FROM t_board_cmt A INNER JOIN t_user B ON A.writer = B.iuser WHERE A.iboard = ? ORDER BY A.icmt ASC";
+        String sql = "SELECT A.icmt, A.ctnt, A.writer, A.rdt, A.mdt, B.nm as writerNm FROM t_board_cmt A INNER JOIN t_user B ON A.writer = B.iuser WHERE A.iboard = ? ORDER BY A.icmt ASC";
         try{
             con = DbUtils.getCon();
             ps = con.prepareStatement(sql);
@@ -63,6 +63,7 @@ public class BoardCmtDAO {
                         .writer(rs.getInt("writer"))
                         .ctnt(rs.getString("ctnt"))
                         .rdt(rs.getString("rdt"))
+                        .mdt(rs.getString("mdt"))
                         .writerNm(rs.getString("writerNm"))
                         .build();
                 list.add(vo);

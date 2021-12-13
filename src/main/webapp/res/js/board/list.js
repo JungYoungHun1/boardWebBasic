@@ -4,8 +4,16 @@ function moveToDetail(iboard) {
 }
 
 var searchFrmElem = document.querySelector('#searchFrm');
-if(searchFrmElem){
-    searchFrmElem.rowCnt.addEventListener('change', function(){
+
+if(searchFrmElem) {
+    searchFrmElem.rowCnt.addEventListener('change', function () {
         searchFrmElem.submit();
     });
+
+}
+if(searchFrmElem) {
+    searchFrmElem.array.addEventListener('change', function () {
+        searchFrmElem.submit();
+    });
+
 }

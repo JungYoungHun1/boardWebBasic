@@ -12,6 +12,8 @@ public class BoardDTO {
     private int rowCnt;
     private int searchType;
     private String searchText;
+    private int loginUserPk;
+    private int array;
 
 //    public void setPage(int page){
 //        this.page=page;

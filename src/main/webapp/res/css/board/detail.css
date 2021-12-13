@@ -15,3 +15,28 @@
     padding: 30px;
     border: 1px solid #4b4b4b;
 }
+
+.ex{
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+.exam{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.writer{
+    font-size: 14px;
+    font-weight: 900;
+}
+.rdt{
+    font-size: 5px;
+}
+.ctnt{
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 20px;
+    font-weight: 300;
+}
+.mod, .del{
+    border-radius: 20%;
+}

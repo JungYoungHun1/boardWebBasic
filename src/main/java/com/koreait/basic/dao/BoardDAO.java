@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BoardDAO {
+
     private static String getSearchWhereString(BoardDTO param){
         if(param.getSearchText()!=null && !"".equals(param.getSearchText())) {
             switch (param.getSearchType()) {
@@ -95,15 +96,27 @@ public class BoardDAO {
         }
         return 0;
     }
+    private static String getArrayType(BoardDTO param){
+        switch(param.getArray()){
+            case 1:
+                return (" ORDER BY A.iboard DESC");
+            case 2:
+                return (" ORDER BY A.title ASC");
+            case 3:
+                return (" ORDER BY A.hit DESC");
+        }
+        return " ORDER BY A.iboard DESC";
+    }
 
     public static List<BoardVO> selBoardList(BoardDTO param){
         List<BoardVO> list = new ArrayList<>();
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String sql = "SELECT A.iboard, A.title, A.writer, A.hit, A.rdt, B.nm as writerNm FROM t_board A INNER JOIN t_user B ON A.writer = B.iuser";
+        String sql = "SELECT A.iboard, A.title, A.writer, A.hit, A.rdt, A.mdt, B.nm as writerNm FROM t_board A INNER JOIN t_user B ON A.writer = B.iuser";
         sql += getSearchWhereString(param);
-        sql += " ORDER BY A.iboard DESC LIMIT ?, ?";
+        sql += getArrayType(param);
+        sql += " LIMIT ?, ?";
         try{
             con = DbUtils.getCon();
             ps = con.prepareStatement(sql);
@@ -116,6 +129,7 @@ public class BoardDAO {
                 int writer = rs.getInt("writer");
                 int hit = rs.getInt("hit");
                 String rdt = rs.getString("rdt");
+                String mdt = rs.getString("mdt");
                 String writerNm = rs.getString("writerNm");
                 BoardVO vo = BoardVO.builder()
                         .iboard(iboard)
@@ -123,6 +137,7 @@ public class BoardDAO {
                         .writer(writer)
                         .hit(hit)
                         .rdt(rdt)
+                        .mdt(mdt)
                         .writerNm(writerNm).build();
                 list.add(vo);
             }

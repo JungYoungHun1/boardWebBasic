@@ -15,12 +15,14 @@ import java.io.IOException;
 public class boardListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        int array = Utils.getParameterInt(req,"array",0);
         int searchType = Utils.getParameterInt(req,"searchType",0);
         String searchText = req.getParameter("searchText");
         int rowCnt = Utils.getParameterInt(req,"rowCnt",5);
         int page = Utils.getParameterInt(req, "page", 1);
 
         BoardDTO param = new BoardDTO();
+        param.setArray(array);
         param.setSearchType(searchType);
         param.setSearchText(searchText);
         param.setRowCnt(rowCnt);
