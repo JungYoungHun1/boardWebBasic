@@ -64,7 +64,7 @@
                 <c:set var="eachWriterNm" value="${fn:replace(eachWriterNm, param.searchText, '<mark>' += param.searchText += '</mark>')}" />
             </c:if>
             <tr class="record" onclick="moveToDetail(${item.iboard});">
-                <td>${item.iboard}</td>
+                <td>${item.iboard} <i class="fas fa-heart" id="heart" style="color: red"></i>x ${requestScope.HeartUp.cnt} </td>
                 <td>${eachTitle}</td>
                 <td>${item.hit}</td>
                 <td>${eachWriterNm}</td>

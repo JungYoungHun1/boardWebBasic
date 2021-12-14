@@ -3,3 +3,5 @@
 .selected{color: chocolate; font-weight: bold;}
 .pageContainer{display: flex; padding: 10px 50px; justify-content: center;}
 .pageContainer div:not(:first-child){margin-left: 8px;}
+#heart{font-size: 3px;}
+.record .item.cnt{font-size: 3px;}

@@ -31,7 +31,7 @@ public class BoardHeartServlet extends HttpServlet {
                 BoardHeartDAO.delBoardHeart(entity);
                 break;
         }
-        res.sendRedirect("/board/detail?iboard=" + iboard);
+        res.sendRedirect("/board/detail?nohits=1&iboard=" + iboard);
     }
 
     @Override

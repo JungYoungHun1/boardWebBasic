@@ -9,6 +9,7 @@ public class BoardVO {
     private int iboard;
     private int writer;
     private int hit;
+    private int cnt;
     private String title;
     private String ctnt;
     private String rdt;

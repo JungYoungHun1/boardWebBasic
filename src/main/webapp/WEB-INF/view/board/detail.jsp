@@ -15,15 +15,18 @@
     <div class="fav">
         <c:choose>
             <c:when test="${requestScope.isHeart == 1}">
-            <a href="/board/heart?proc=2&iboard=${requestScope.data.iboard}"><i class="fas fa-thumbs-up"></i></a>
+            <a href="/board/heart?proc=2&iboard=${requestScope.data.iboard}"><i class="fas fa-heart", style="color: red"></i></a>
+                <span> : ${requestScope.HeartUp.hit}</span>
             </c:when>
             <c:otherwise>
-            <a href="/board/heart?proc=1&iboard=${requestScope.data.iboard}"><i class="far fa-thumbs-up"></i></a>
+            <a href="/board/heart?proc=1&iboard=${requestScope.data.iboard}"><i class="far fa-heart", style="color: red"></i></a>
+                <span> : ${requestScope.HeartUp.hit}</span>
             </c:otherwise>
         </c:choose>
     </div>
     </c:if>
-    <div>글번호: ${requestScope.data.iboard}</div>
+
+    <div>글번호 : ${requestScope.data.iboard}</div>
     <div>조회수 : <c:out value="${requestScope.data.hit}"/></div>
     <div>작성자 : <c:out value="${requestScope.data.writerNm}"/></div>
     <% if(vo.getRdt().equals(vo.getMdt())){%>

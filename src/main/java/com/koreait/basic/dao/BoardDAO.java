@@ -101,9 +101,9 @@ public class BoardDAO {
             case 1:
                 return (" ORDER BY A.iboard DESC");
             case 2:
-                return (" ORDER BY A.title ASC");
+                return (" ORDER BY A.title ASC, A.iboard DESC");
             case 3:
-                return (" ORDER BY A.hit DESC");
+                return (" ORDER BY A.hit DESC, A.iboard DESC");
         }
         return " ORDER BY A.iboard DESC";
     }

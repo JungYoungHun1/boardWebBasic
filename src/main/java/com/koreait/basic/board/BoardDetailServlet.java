@@ -42,6 +42,9 @@ public class BoardDetailServlet extends HttpServlet {
         if(loginUserPk != data.getWriter() && nohits != 1){
             BoardDAO.updBoardHitUp(param);
         }
+        BoardHeartEntity entity = new BoardHeartEntity();
+        entity.setIboard(Utils.getParameterInt(req,"iboard"));
+        req.setAttribute("HeartUp",BoardHeartDAO.updHeartUp(entity));
         Utils.displayView(data.getTitle(), "board/detail", req, res);    }
 
     @Override

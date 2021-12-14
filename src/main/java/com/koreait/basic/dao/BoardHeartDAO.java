@@ -9,21 +9,26 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class BoardHeartDAO {
-    public static void updHeartHitUp(BoardHeartEntity param){
+    public static BoardHeartEntity updHeartUp(BoardHeartEntity param){
+        BoardHeartEntity entity = new BoardHeartEntity();
         Connection con = null;
         PreparedStatement ps = null;
-        String sql = "UPDATE t_board_heart SET hit = hit + 1 WHERE iboard=? AND iuser=?";
+        ResultSet rs = null;
+        String sql = "SELECT COUNT(*) as cnt FROM t_board_heart WHERE iboard = ?";
         try{
             con = DbUtils.getCon();
             ps = con.prepareStatement(sql);
             ps.setInt(1,param.getIboard());
-            ps.setInt(2,param.getIuser());
-            ps.executeUpdate();
+            rs = ps.executeQuery();
+            if(rs.next()){
+                entity.setHit(rs.getInt("cnt"));
+            }
         }catch (Exception e){
             e.printStackTrace();
         }finally {
-            DbUtils.close(con, ps);
+            DbUtils.close(con, ps, rs);
         }
+        return entity;
 
     }
     public static int insBoardHeart(BoardHeartEntity param){
@@ -61,7 +66,7 @@ public class BoardHeartDAO {
 
         return 0;
     }
-    public static int selIsHeart(BoardHeartEntity param){
+    public static int selIsHeart(BoardHeartEntity entity){
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -69,12 +74,13 @@ public class BoardHeartDAO {
         try{
             con = DbUtils.getCon();
             ps = con.prepareStatement(sql);
-            ps.setInt(1, param.getIuser());
-            ps.setInt(2, param.getIboard());
+            ps.setInt(1, entity.getIuser());
+            ps.setInt(2, entity.getIboard());
             rs = ps.executeQuery();
             if(rs.next()){
                 return 1;
             }
+            return 2;
         }catch (Exception e){
             e.printStackTrace();
         }finally {
