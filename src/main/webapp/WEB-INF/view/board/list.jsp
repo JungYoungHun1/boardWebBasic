@@ -1,3 +1,4 @@
+<%@ page import="com.koreait.basic.board.model.BoardHeartEntity" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
@@ -41,9 +42,9 @@
     <table id = "boardTable">
         <colgroup>
             <col width="20%">
+            <col width="200px">
             <col>
             <col>
-            <col width="100px">
             <col>
             <col>
         </colgroup>
@@ -63,11 +64,18 @@
             <c:if test="${param.searchType == 4 || param.searchType == 5}">
                 <c:set var="eachWriterNm" value="${fn:replace(eachWriterNm, param.searchText, '<mark>' += param.searchText += '</mark>')}" />
             </c:if>
+
+            <c:set var="pImg" value="defaultProfile.png"/>
+            <c:if test="${item.profileImg != null}">
+                <c:set var="pImg" value="profile/${item.writer}/${item.profileImg}"/>
+            </c:if>
+
             <tr class="record" onclick="moveToDetail(${item.iboard});">
-                <td>${item.iboard} <i class="fas fa-heart" id="heart" style="color: red"></i>x ${requestScope.HeartUp.cnt} </td>
+                <td>${item.iboard} <i class="fas fa-heart" id="heart" style="color: red"></i>x ${requestScope.HeartUp.hit}</td>
                 <td>${eachTitle}</td>
                 <td>${item.hit}</td>
-                <td>${eachWriterNm}</td>
+                <td><span class = "line"><span class="circular--img circular--size40">
+                    <img src="/res/img/${pImg}"></span><span class="writer"> ${eachWriterNm}</span></span></td>
                 <td>${item.rdt eq item.mdt? item.rdt : item.mdt}${item.rdt eq item.mdt? "" : "(수정됨)"}</td>
             </tr>
         </c:forEach>

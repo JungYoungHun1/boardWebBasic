@@ -1,6 +1,9 @@
 package com.koreait.basic.user;
 
+import com.koreait.basic.FileUtils;
 import com.koreait.basic.Utils;
+import com.koreait.basic.dao.UserDAO;
+import com.koreait.basic.user.model.UserEntity;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
@@ -18,6 +21,11 @@ import java.util.Enumeration;
 public class UserProfileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        int loginUserPk = Utils.getLoginUserPk(req);
+        UserEntity entity = new UserEntity();
+        entity.setIuser(loginUserPk);
+        req.setAttribute("data", UserDAO.selUser(entity));
+
         String title = "프로필";
         req.setAttribute("subPage","user/profile");
         Utils.displayView(title,"user/mypage",req, res);
@@ -30,11 +38,19 @@ public class UserProfileServlet extends HttpServlet {
         ServletContext application = req.getServletContext();
         String targetPath = application.getRealPath("/res/img/profile/"+loginUserPk);
         File file = new File(targetPath);
-        file.mkdirs();
+        if(file.exists()){
+            FileUtils.delFolderFiles(targetPath, false);
+        }else{
+            file.mkdirs();
+        }
         MultipartRequest mr = new MultipartRequest(req, targetPath, maxSize, "UTF-8", new DefaultFileRenamePolicy());
-        Enumeration files = mr.getFileNames();
 
-        String fileNm = (String) files.nextElement();
+        String changedFileNm = mr.getFilesystemName("profileImg");
+        UserEntity entity = new UserEntity();
+        entity.setProfileImg(changedFileNm);
+        entity.setIuser(loginUserPk);
+        int result = UserDAO.updUser(entity);
+        res.sendRedirect("/user/profile");
 
     }
 }

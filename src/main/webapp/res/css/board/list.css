@@ -5,3 +5,5 @@
 .pageContainer div:not(:first-child){margin-left: 8px;}
 #heart{font-size: 3px;}
 .record .item.cnt{font-size: 3px;}
+.record .line{display: flex;}
+.record .writer {margin-top: 8px; margin-left: 10px;}
