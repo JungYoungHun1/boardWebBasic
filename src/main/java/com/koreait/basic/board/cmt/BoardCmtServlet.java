@@ -28,32 +28,40 @@ public class BoardCmtServlet extends HttpServlet {
         List<BoardCmtVO> list = BoardCmtDAO.selBoardCmtList(cmtParam);
 
         Gson gson = new Gson();
-        res.setContentType("application/json");
+
+        res.setContentType("application/json;charset=UTF-8");
         res.setCharacterEncoding("UTF-8");
         PrintWriter out = res.getWriter();
         out.print(gson.toJson(list));
-        out.flush();
+        out.flush();;
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         //등록(C), 수정(U), 삭제(D)
         String proc = req.getParameter("proc");
+        System.out.println("proc : " + proc);
+
         String json = Utils.getJson(req);
         Gson gson = new Gson();
+        System.out.println("json : " + json);
         BoardCmtEntity entity = gson.fromJson(json, BoardCmtEntity.class);
         entity.setWriter(Utils.getLoginUserPk(req));
 
         int result = 0;
-        switch(proc){
+        switch(proc) {
             case "upd":
                 result = BoardCmtDAO.modBoardCmt(entity); //writer, icmt, ctnt
+                break;
+            case "del":
+                result = BoardCmtDAO.delBoardCmt(entity); //writer, icmt
+                break;
+            case "ins":
+                result = BoardCmtDAO.insBoardCmt(entity); //writer, iboard, ctnt
                 break;
         }
         res.setContentType("application/json");
         PrintWriter out = res.getWriter();
         out.print(String.format("{\"result\": %d}", result));
-
-
     }
 }
